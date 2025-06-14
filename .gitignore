@@ -131,39 +131,4 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
-# Pyre type checker
-.pyre/
-
-# pytype static type analyzer
-.pytype/
-
-# Cython debug symbols
-cython_debug/
-
-# PyCharm
-#.idea/
-
-# Abstra
-.abstra/
-
-# VSCode
-#.vscode/
-
-# Ruff
-.ruff_cache/
-
-# PyPI
-.pypirc
-
-# Cursor AI
-.cursorignore
-.cursorindexingignore
-
-# === Custom for Glacier Retreat Project ===
-
-# Ignore large raster and model files
-Data/Processed/*.tif
-Model/Results/model_weights.h5
-
-# Ignore predicted full masks
-Full_image_inference/*.tif
+# Pyre
