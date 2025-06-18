@@ -1,101 +1,141 @@
-# Glacier_retreat_mapping
-Deep Learning- based glacier retreat mapping using Sentinel-2 imagery
-# Glacier_retreat_mapping 🌍🧊
+# 🧊 Glacier Retreat Mapping using Deep Learning & Sentinel-2 Imagery
 
-**Deep Learning‑based glacier retreat mapping using Sentinel‑2 imagery**
+This project demonstrates how to detect and visualize *glacier retreat* over time using *Sentinel‑2 satellite images, deep learning (U‑Net), and open-source geospatial tools like **QGIS* and *Python*.
 
----
-
-## 📘 Overview
-
-This project presents a UNet-based deep learning workflow to map how Gangotri Glacier (Himalayas) has retreated between 2016 and 2024 using Sentinel‑2 data. It includes:
-
-- Patch-based training  
-- Full image inference  
-- Time-series retreat graph  
-- Animated timelapse  
-- Final summary after‑map
+📍 *Study Area:* Gangotri Glacier, Uttarakhand, India  
+📆 *Time Range:* 2016–2024  
+🛰 *Satellite Data:* Sentinel‑2 (L2A, atmospherically corrected)
 
 ---
 
-## 🗂️ Folder Structure
+## 📌 Objectives
 
-GlacierMappingProjectClean/
-├── Data/
-│ ├── Glacier_RGB_2016.tif* ← Sample RGB (before glacier retreat)
-│ ├── Glacier_RGB_2024.tif* ← Sample RGB (after glacier retreat)
-│ ├── glacier_2016_prediction.tif* ← Mask predicted by model (2016)
-│ ├── glacier_2024_prediction.tif* ← Mask predicted by model (2024)
-│ └── glacier_aoi_merged.shp ← Study area polygon
-│
-├── Model/
-│ ├── train_unet.py ← Model training script (U‑Net architecture)
-│ └── unet_model.py ← U‑Net definition module
-│
-├── Full_image_inference/
-│ ├── predict_full_image.py ← Inference for one image
-│ └── predict_years_loop.py ← Inference loop for multiple years
-│
-├── results/
-│ ├── glacier_area_by_year.csv ← Glacier area (km²) per year
-│ ├── glacier_retreat_graph.png ← Area vs year plot
-│ ├── glacier_retreat_timelapse.gif ← Animated retreat timelapse
-│
-├── Patches/ ← Sample training patches (images + masks)
-├── generate_patches.py ← Creates training data patches
-├── plot_glacier_retreat.py ← Generates the retreat plot
-├── make_retreat_timelapse.py ← Builds visual timelapse animation
-├── Calculate_glacier_area.py ← Converts mask to area stats
-├── README.md ← (this file)
-└── .gitignore ← Ignores large files (.tif, .h5)
-
-
-\* These are **sample files only**. Large files (>100MB) are omitted to make the repo lightweight.  
-Use the instructions below to add full-resolution data.
+- Create glacier masks using deep learning segmentation (U‑Net)
+- Analyze glacier area change over multiple years
+- Visualize retreat using graphs and animated maps
+- Publish the full workflow for reproducibility
 
 ---
 
-## 🚀 Quick Start
+## 🧠 Methodology
 
-### 1. Clone the repository
+1. *Data Collection*  
+   - Downloaded Sentinel‑2 imagery (bands B2, B3, B4) from Copernicus Hub  
+   - Selected cloud-free images from *2016 to 2024* (1 image/year)
+
+2. *Preprocessing*
+   - Merged and clipped Sentinel‑2 tiles to the AOI (Gangotri Glacier) in QGIS  
+   - Created glacier outlines using RGI glacier shapefiles  
+   - Generated glacier masks to train the model
+
+3. *Patch Generation*
+   - Divided RGB images and masks into small 128×128 px patches  
+   - Used patches to train a semantic segmentation model
+
+4. *Model Training*
+   - Used a *U‑Net architecture* in TensorFlow/Keras  
+   - Trained the model on glacier/non-glacier classification patches
+
+5. *Full Image Prediction*
+   - Applied the trained U‑Net model to full satellite images  
+   - Predicted glacier extent for each year (2016–2024)
+
+6. *Postprocessing & Analysis*
+   - Converted predicted binary masks to glacier area (in km²)  
+   - Plotted glacier retreat trend over time  
+   - Generated a *glacier retreat timelapse GIF*
+
+---
+
+## 🔧 Tools & Libraries
+
+- 🛰 *Sentinel-2 data* (Copernicus Open Access Hub)
+- 🗺 *QGIS* – AOI extraction, raster clipping, shapefile creation
+- 🐍 *Python Libraries*  
+  - rasterio, numpy, matplotlib, tensorflow, geopandas, PIL
+
+---
+
+## 🧪 How to Reproduce This Project
+
+### Step 1: Install dependencies
 ```bash
-git clone https://github.com/hetvishah2799/Glacier_retreat_mapping.git
-cd Glacier_retreat_mapping
+pip install numpy rasterio matplotlib geopandas pillow tensorflow
 
-2. (Optional) Add large data files
-Download and place in Data/:
+### Step 2: Download Sentinel‑2 imagery (L2A) from Copernicus Hub
+```bash
+Bands required: B2 (blue), B3 (green), B4 (red)
 
-Glacier_RGB_2016.tif (~120MB)
+Select 1 cloud-free image per year for your glacier AOI
 
-Glacier_RGB_2024.tif (~120MB)
 
-Full-resolution glacier predictions
+### Step 3: Preprocess images in QGIS
+```bash
+Clip tiles to your glacier boundary shapefile (AOI)
 
-(You can link these externally via Google Drive—check LICENSE section.)
+Merge if AOI spans multiple tiles
 
-3. Install dependencies
+Export as single RGB .tif per year
 
-pip install -r requirements.txt
 
-(Create a requirements.txt file with tensorflow, rasterio, geopandas, matplotlib, pillow)
+### Step 4: Generate training patches
+```bash
+python generate_patches.py
 
-4. Train the U‑Net model (optional)
+### Step 5: Train the U‑Net model
+```bash
+python train_unet.py
 
-python train_unet.py --epochs 10
+### Step 6: Predict glacier masks
+```bash
+python predict_full_image.py
 
-5. Run inference
-
-python predict_full_image.py --input Data/Glacier_RGB_2016.tif --output predictions/glacier_2016_prediction.tif
-python predict_full_image.py --input Data/Glacier_RGB_2024.tif --output predictions/glacier_2024_prediction.tif
-
-6. Produce visual results
-Compute yearly glacier areas:
+### Step 7: Analyze area
+```bash
 python Calculate_glacier_area.py
 
-Generate area vs year plot:
+### Step 8: Plot & visualize
+```bash
 python plot_glacier_retreat.py
-
-Build S2 timelapse:
 python make_retreat_timelapse.py
 
-Generated files are in the results/ folder.
+
+---
+
+### 📊 Example Outputs (what this project generates)
+
+✅ glacier_area_by_year.csv — glacier area per year
+
+✅ glacier_retreat_graph.png — glacier loss over time
+
+✅ glacier_retreat_timelapse.gif — visual animation of glacier change
+
+
+
+---
+
+### 🌐 Data Sources
+
+Sentinel‑2 imagery: Copernicus Open Access Hub
+
+Glacier outlines: RGI (Randolph Glacier Inventory)
+
+AOI shapefile: Digitized from QGIS over Gangotri Glacier
+
+
+---
+
+### 🙋 Author
+
+Hetvi Shah
+MSc in Geoinformatics | Deep Learning for Remote Sensing
+🔗 LinkedIn Profile
+📧 hetvishah2799@gmail.com
+
+
+---
+
+### 📜 License
+
+This project is licensed under the MIT License.
+You may reuse, modify, and extend it with credit.
