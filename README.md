@@ -61,16 +61,15 @@ This project demonstrates how to detect and visualize *glacier retreat* over tim
 ### Step 1: Install dependencies
 ```bash
 pip install numpy rasterio matplotlib geopandas pillow tensorflow
-
+```
 ### Step 2: Download Sentinel‑2 imagery (L2A) from Copernicus Hub
-```bash
+
 Bands required: B2 (blue), B3 (green), B4 (red)
 
 Select 1 cloud-free image per year for your glacier AOI
 
-
 ### Step 3: Preprocess images in QGIS
-```bash
+
 Clip tiles to your glacier boundary shapefile (AOI)
 
 Merge if AOI spans multiple tiles
@@ -81,23 +80,28 @@ Export as single RGB .tif per year
 ### Step 4: Generate training patches
 ```bash
 python generate_patches.py
+```
 
 ### Step 5: Train the U‑Net model
 ```bash
 python train_unet.py
+```
 
 ### Step 6: Predict glacier masks
 ```bash
 python predict_full_image.py
+```
 
 ### Step 7: Analyze area
 ```bash
 python Calculate_glacier_area.py
+```
 
 ### Step 8: Plot & visualize
 ```bash
 python plot_glacier_retreat.py
 python make_retreat_timelapse.py
+```
 
 
 ---
@@ -110,7 +114,24 @@ python make_retreat_timelapse.py
 
 ✅ glacier_retreat_timelapse.gif — visual animation of glacier change
 
+---
 
+## 📈 Glacier Retreat Over Time
+
+<p align="center">
+  <img src="Results/glacier_retreat_graph.png" width="600">
+</p>
+
+---
+
+## 🧠 UNet Predictions by Year
+
+<p align="center">
+  <img src="Results/prediction_gallery.png" width="300">
+</p>
+
+<!-- You can add more side-by-side -->
+<!-- Just copy the <img ...> lines and update filenames -->
 
 ---
 
@@ -130,7 +151,7 @@ AOI shapefile: Digitized from QGIS over Gangotri Glacier
 Hetvi Shah
 MSc in Geoinformatics | Deep Learning for Remote Sensing
 🔗 LinkedIn Profile
-📧 hetvishah2799@gmail.com
+📧 https://www.linkedin.com/in/hetvi-shah-a7395320a
 
 
 ---
